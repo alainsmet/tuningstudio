@@ -1,0 +1,124 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TuningStudio"
+        xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" x:Class="TuningStudio.MainWindow"
+        mc:Ignorable="d"
+        Title="Tuning Studio" Height="450" Width="800">
+    <Window.Resources>
+        <ControlTemplate x:Key="TabHeaderClose" TargetType="{x:Type TabItem}">
+            <Border x:Name="TabBorder" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1,1,1,0" Padding="10,5,5,5" CornerRadius="5,5,0,0" Margin="0,1,0,0">
+                <Border.Background>
+                    <SolidColorBrush x:Name="innerBorderBackgroundBrush" Color="White" />
+                </Border.Background>
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="1" Opacity=".2" Direction="0" ShadowDepth="1" RenderingBias="Quality" Color="DarkGray"/>
+                </Border.Effect>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{TemplateBinding Header}" Grid.Column="0" Padding="0,0,8,0" Width="auto" VerticalAlignment="Center"/>
+                    <Ellipse x:Name="tabCloseEllipse"  Width="15" Height="15" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1">
+                        <Ellipse.Fill>
+                            <SolidColorBrush x:Name="EllipseBackgroundBrush" Color="White" />
+                        </Ellipse.Fill>
+                    </Ellipse>
+                    <TextBlock x:Name="tabCloseText" FontSize="12" Text="X" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Grid.Column="1"/>
+                </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" SourceName="tabCloseEllipse" Value="True">
+                    <Setter TargetName="tabCloseEllipse" Property="Fill" Value="DarkGray" />
+                </Trigger>
+                <Trigger Property="IsMouseOver" SourceName="tabCloseText" Value="True">
+                    <Setter TargetName="tabCloseEllipse" Property="Fill" Value="DarkGray" />
+                </Trigger>
+                <Trigger Property="IsSelected" Value="False">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation Storyboard.TargetName="innerBorderBackgroundBrush" Storyboard.TargetProperty="Color" To="#dbdbdb" Duration="0:0:0.1" />
+                                <ColorAnimation Storyboard.TargetName="EllipseBackgroundBrush" Storyboard.TargetProperty="Color" To="#dbdbdb" Duration="0:0:0.1" />
+                                <ThicknessAnimation Storyboard.TargetName="TabBorder" Storyboard.TargetProperty="Margin" To="0,1,0,0" Duration="0:0:0.1" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation Storyboard.TargetName="innerBorderBackgroundBrush" Storyboard.TargetProperty="Color" To="White" Duration="0:0:0.1" />
+                                <ColorAnimation Storyboard.TargetName="EllipseBackgroundBrush" Storyboard.TargetProperty="Color" To="White" Duration="0:0:0.1" />
+                                <ThicknessAnimation Storyboard.TargetName="TabBorder" Storyboard.TargetProperty="Margin" To="3,-1,3,-1" Duration="0:0:0.1" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <SolidColorBrush x:Key="blackBrushKey" x:Name="blackBrush" Color="Black" />
+
+    </Window.Resources>
+    <Grid DockPanel.Dock="Left">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300" MinWidth="200"/>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Menu Height="25" DockPanel.Dock="Top" Grid.Row="0" Grid.ColumnSpan="3">
+            <MenuItem Height="25" Header="_File">
+                <MenuItem Header="Open new file ..." />
+                <MenuItem Header="Exit" />
+            </MenuItem>
+        </Menu>
+        <Grid Grid.Column="0" Grid.Row="1" MinWidth="100">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Button Content="Add a new file ..." Grid.Row="0"/>
+            <TreeView VerticalAlignment="Stretch" Grid.Row="1"/>
+        </Grid>
+
+        <GridSplitter Grid.Column="1" Grid.Row="1" ResizeDirection="Columns" Width="3" HorizontalAlignment="Stretch" />
+        <TabControl Grid.Row="1" Grid.Column="2" >
+            <TabItem Header="File 1 with more text in it" Template="{StaticResource TabHeaderClose}">
+                <StackPanel Margin="5,0">
+                    <Border CornerRadius="8" Height="100" BorderThickness="1" Margin="0,10">
+                        <Border.Background>
+                            <SolidColorBrush x:Name="BorderBackgroundBrush" Color="#eeeeee" />
+                        </Border.Background>
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="2" Opacity=".5" Direction="325" ShadowDepth="2" RenderingBias="Quality" Color="Black"/>
+                        </Border.Effect>
+                        <StackPanel Orientation="Horizontal">
+                            <RibbonGroup Header="Test">
+                                <RibbonButton Label="Remove" BorderThickness="1" />
+                                <RibbonButton Label="Remove" BorderThickness="1" />
+                            </RibbonGroup>
+                            <RibbonGroup Header="Test hexa"/>
+                        </StackPanel>
+                    </Border>
+                    <Expander Header="Test1" Background="BlueViolet">
+                        <Button Content="Test" />
+                    </Expander>
+
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="File 2" Template="{StaticResource TabHeaderClose}"/>
+            <TabItem Header="File 2" Template="{StaticResource TabHeaderClose}"/>
+            <TabItem Header="File 2" Template="{StaticResource TabHeaderClose}"/>
+        </TabControl>
+        <StatusBar Grid.Row="2" Grid.ColumnSpan="3">
+            <TextBlock Text="Waiting"/>
+        </StatusBar>
+    </Grid>
+</Window>
